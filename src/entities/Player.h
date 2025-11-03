@@ -22,8 +22,17 @@ public:
     void update(float dt) override;
     void render(sf::RenderTarget& target) const override;
 
+	void setOnPlatform(float posY, int platformIdx);
+	void removeFromPlatform();
+
 	bool isDashing() { return m_meteorAttack || m_isDashing; };
 	void resetDash();
+
+	void checkCameraShake(sf::RenderTarget& target);
+
+	sf::Vector2f getPrevPosition() { return m_prevPos; };
+	sf::Vector2f getSize();
+	sf::FloatRect getGlobalBounds();
 
 private:
 
@@ -40,6 +49,16 @@ private:
 
 	void updateJumpLoadBar();
 
+	bool handleCameraShake(sf::RenderTarget& target);
+	bool m_cameraShake = false;
+	std::vector<sf::Vector2f> m_shakeOffsets = {
+		{4, 4}, {-4, -4}, {4, -4}, {-4, 4},
+		{4, 4}, {-4, -4}, {4, -4}, {-4, 4}
+	};
+	size_t m_shakeIdx = 0;
+	sf::Clock m_shakeTimer;
+	float m_shakeInterval = 0.04f;
+
 	bool m_isInAir = false;
 	bool m_didDoubleJump = false;
 	bool m_isTurboJumping = false;
@@ -53,7 +72,11 @@ private:
 	bool m_facingLeft = false;
 	bool m_outlineActive = true;
 
+	bool m_isOnPlatform = false;
+	int m_curPlatformIdx = -1;
+
 	float m_speed = PlayerSpeed;
+	sf::Vector2f m_prevPos;
 
 	sf::Clock m_turboLoadClock;
 	sf::Clock m_turboEffectClock;

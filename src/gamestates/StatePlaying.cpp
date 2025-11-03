@@ -3,6 +3,7 @@
 #include "StateStack.h"
 #include "ResourceManager.h"
 #include "Constants.h"
+#include "utils.h"
 #include <memory>
 #include <iostream>
 #include <cmath>
@@ -29,6 +30,10 @@ bool StatePlaying::init()
 
 	m_pEnemySpawner = std::make_unique<EnemySpawner>();
 	if (!m_pEnemySpawner)
+		return false;
+
+	m_pPlatformHandler = std::make_unique<PlatformHandler>();
+	if (!m_pPlatformHandler)
 		return false;
 
     return true;
@@ -91,6 +96,9 @@ void StatePlaying::update(float dt)
     }
 
     m_pPlayer->update(dt);
+	m_pPlatformHandler->update(dt, m_pPlayer.get());
+	m_pPlatformHandler->checkPlayerCollision(m_pPlayer.get());
+
 
     for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)
     {
@@ -102,8 +110,12 @@ void StatePlaying::update(float dt)
 
 void StatePlaying::render(sf::RenderTarget& target) const
 {
+	m_pPlayer->checkCameraShake(target);
+
     target.draw(m_ground);
+	m_pPlatformHandler->draw(target);
     for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)
         pEnemy->render(target);
     m_pPlayer->render(target);
 }
+

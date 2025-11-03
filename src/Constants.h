@@ -12,6 +12,11 @@ const unsigned HeaderTextSize = 70;
 // Environment
 const float GroundLevel = 800.0f;
 
+// Platforms
+const float PlatformInitSpawnTime = 3.0f;
+const float PlatformHeight = 20.f;
+const float PlatformSpeed = -200.f;
+
 // Normal jumping
 const float PlayerJumpPower = -700.f;
 const float Gravity = 800.f;

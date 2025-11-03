@@ -4,6 +4,7 @@
 #include "entities/Player.h"
 #include "entities/Enemy.h"
 #include "EnemySpawner.h"
+#include "PlatformHandler.h"
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -25,6 +26,7 @@ private:
 
     StateStack& m_stateStack;
     std::unique_ptr<EnemySpawner> m_pEnemySpawner;
+	std::unique_ptr<PlatformHandler> m_pPlatformHandler;
     std::unique_ptr<Player> m_pPlayer;
 
     std::vector<std::unique_ptr<Enemy>> m_enemies;

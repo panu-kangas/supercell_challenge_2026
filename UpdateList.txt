@@ -21,6 +21,10 @@ NEW FEATURES:
 - Added Meteor Attack that falls down from air and kills enemies
 - Added Side Dashing, that can kill enemies and help player to move quickly around
 - Created Enemy spawning logic where enemies appear faster over time
+- Made separate enemy classes for GroundEnemy and AirEnemy. Both have their own spawning logic.
+- Enemies now speed up  over time
+- Added camera shake for Meteor Attack
+- Added platforms that spawn randomly on the game. Player can jump on to platforms.
 
 
 IDEAS:

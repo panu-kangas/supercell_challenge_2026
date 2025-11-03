@@ -22,6 +22,7 @@ bool Player::init()
     if (!m_pSprite)
         return false;
 
+	m_prevPos = m_position;
     m_rotation = sf::degrees(0);
     sf::FloatRect localBounds = m_pSprite->getLocalBounds();
 	m_pSprite->setScale(sf::Vector2f(3.0f, 3.0f));
@@ -61,13 +62,41 @@ void Player::checkOutOfBounds()
 		m_position.x = rightLimit;
 }
 
+void Player::setOnPlatform(float posY, int platformIdx)
+{
+	if (m_meteorAttack)
+		m_cameraShake = true;
+	m_isInAir = false;
+	m_didDoubleJump = false;
+	m_meteorAttack = false;
+	m_isTurboJumping = false;
+	m_isOnPlatform = true;
+	m_curPlatformIdx = platformIdx;
+	m_position.y = posY;
+	if (!m_isDashing)
+		m_pSprite->setColor(m_playerNormalColor);
+}
+
+void Player::removeFromPlatform()
+{
+	m_isOnPlatform = false;
+	m_curPlatformIdx = -1;
+	m_isInAir = true;
+}
+
+
 void Player::checkGrounded()
 {
 	if (!m_isInAir)
 		return ;
 
 	if (m_position.y >= GroundLevel)
-	{		
+	{	
+		if (m_meteorAttack)
+		{
+			m_cameraShake = true;
+		}
+
         m_isInAir = false;
 		m_didDoubleJump = false;
 		m_meteorAttack = false;
@@ -97,15 +126,20 @@ void Player::applyGravity(float dt)
 
 void Player::handleSideMovement(bool aPressed, bool dPressed)
 {
-	if (m_isLoadingTurbo || m_meteorAttack || m_isDashing)
+	if (m_meteorAttack || m_isDashing)
 		return ;
 
 	if ((!aPressed && !dPressed) || (aPressed && dPressed))
 		m_velocity.x = 0;
-	else if (aPressed)
+	else if (aPressed && !m_isLoadingTurbo)
 		m_velocity.x = -1 * m_speed;
-	else if (dPressed)
+	else if (dPressed && !m_isLoadingTurbo)
 		m_velocity.x = m_speed;
+
+	if (m_isOnPlatform)
+	{
+		m_velocity.x += PlatformSpeed;
+	}
 
 	// PANU: Is this a bad place for this...?
 	if (m_velocity.x > 0)
@@ -243,6 +277,8 @@ void Player::checkTimers()
 
 void Player::update(float dt)
 {
+	m_prevPos = m_position;
+
 	checkTimers();
 	handleInput();
 	applyGravity(dt);
@@ -303,3 +339,59 @@ void Player::render(sf::RenderTarget& target) const
 
 	target.draw(collisionShape); */
 }
+
+
+sf::Vector2f Player::getSize()
+{
+	if (!m_pSprite)
+	{
+		std::cout << "PLAYER: no sprite yet for getSize()\n";
+		return {0, 0};
+	}
+
+	return m_pSprite->getLocalBounds().size;
+}
+
+sf::FloatRect Player::getGlobalBounds()
+{
+	if (!m_pSprite)
+	{
+		std::cout << "PLAYER: no sprite yet for getGlobalBounds()\n";
+		return sf::FloatRect(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(0.0f, 0.0f));
+	}
+
+	return m_pSprite->getGlobalBounds();
+}
+
+void Player::checkCameraShake(sf::RenderTarget& target)
+{
+	if (m_cameraShake)
+	{
+		if (handleCameraShake(target))
+			m_cameraShake = false;
+	}
+}
+
+bool Player::handleCameraShake(sf::RenderTarget& target)
+{	
+	if (m_shakeTimer.getElapsedTime().asSeconds() < m_shakeInterval)
+		return false;
+
+	sf::View view = target.getDefaultView();
+	sf::Vector2f offset = m_shakeOffsets[m_shakeIdx];
+	view.move(offset);
+	target.setView(view);
+
+	m_shakeIdx++;
+	if (m_shakeIdx == m_shakeOffsets.size())
+	{
+		m_shakeIdx = 0;
+		target.setView(target.getDefaultView());
+		return true;
+	}
+
+	m_shakeTimer.restart();
+
+	return false;
+}
+
