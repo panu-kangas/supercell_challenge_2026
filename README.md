@@ -1,24 +1,44 @@
-# Supercell Coding Test
-Hi! This is the base code structure for the Supercell coding test.
-The code is basic and plays poorly, so we need YOU to make it better.
+# Supercell Coding Test - Panu Kangas
 
-## Theme
+Hello! 🙂
 
-This year's theme is "Endless Runner". The starter code gives you a basic, generic infinite runner game.
+This is my take on the Supercell Code Challenge 2026!  
+I had fun creating my version of an Endless runner game, I hope you have fun while playing it too! 🙂
 
-## Disclaimer - MANDATORY RULES
 
-We strongly recommend that you:
-- Read this README to the end.
-- Keep to the theme.
-- Place assets in the `/assets` folder and use the `ResourceManager` class to get file paths.
-    - Example usage: `ResourceManager::getOrLoadFont("Lavigne.ttf")`
-    - Look in `/src/gamestates/StateMenu.cpp` for examples of loading fonts and textures.
-- DO NOT MODIFY the ResourceManager. We might run your game on a different platform than what you developed on.
-- Avoid modifying the CMakeLists.txt file. We will use Cmake to build your project.
-- (optional) Test on different platforms if you can, to assure your submission builds and functions the same.
+## Instructions
 
-We will build your project with the build steps outlined below. If your submission produces any build errors we will most likely end the evaluation there.
+My game is called "Run Dashy, run!"  
+It's a game about a small yellow ball called Dashy, who loves to run far and get a loooot of points in the process.  
+
+The game has in-game instructions too, but here is a quick intro on what's to come:  
+
+### Controls  
+
+A & D - Move sideways  
+W - Jump  
+W (mid-air) - Double jump  
+S (mid air) - Perform Meteor Attack  
+S (hold on ground) - Perform Turbo jump  
+Space - Dash
+
+### Relevant game info  
+
+The game is (surprise surprise) and endless runner, so the player's goal is to get as many points as they can by surviving in the ever moving environment.  
+
+You get points for travelling, but also for defeating enemies!  
+Defeat enemies by Dashing at them or using the Meteor attack from above.  
+
+You lose if you touch enemies without dashing, for touching the nasty spike wall or falling off screen.... you'll soon see what I mean 😉
+
+## About the process
+
+All the game code (excluding base code and one random number generator that I commented) is done by me within the two challenge days.  
+
+On preparation day I played around with player movement and platforms, so those were pretty much implemented at the end of Sunday.  
+On Monday I first fixed the given code base and then started adding new relevant things to it.  
+
+All of my additions can be found from the **UpdateList.txt** file in the repo.
 
 ## Prerequisites
 
@@ -54,19 +74,6 @@ Alternatively, you can specify a generator suited for your toolchain.
 
 Run `cmake -G` to list all available generators.
 
-## Submission
-
-Upload your work to Google Drive, Dropbox (or some other service), and complete the provided form with:
-- A link to your submission (remember to check permissions)
-- Your full name
-- Your email address
-
-[**SUBMIT**](https://supr.cl/hive2026submit)
-
-## Your Game's Instructions
-
-Please include any instructions to your game here.
-
 ## Troubleshooting
 
 ### MacOS
@@ -75,3 +82,13 @@ Your game may not be receiving keyboard inputs. If you see "Detected a keyboard 
     - If you run from Terminal or iTerm2: enable it for that app.
     - If you run from Xcode or Visual Studio Code: enable it for that app.
 - Quit and reopen the launcher, then run your game again.
+
+
+## Submission
+
+Upload your work to Google Drive, Dropbox (or some other service), and complete the provided form with:
+- A link to your submission (remember to check permissions)
+- Your full name
+- Your email address
+
+[**SUBMIT**](https://supr.cl/hive2026submit)
