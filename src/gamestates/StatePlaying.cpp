@@ -15,7 +15,7 @@ StatePlaying::StatePlaying(StateStack& stateStack)
 
 bool StatePlaying::init()
 {
-    m_ground.setSize({1024.0f, 256.0f});
+    m_ground.setSize({ScreenWidth, 256.0f});
     m_ground.setPosition({0.0f, GroundLevel});
     m_ground.setFillColor(GroundColor);
 
@@ -31,17 +31,29 @@ bool StatePlaying::init()
 void StatePlaying::checkEnemyCollision()
 {
     bool playerDied = false;
-    for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)
+	size_t i = 0;
+    while (i < m_enemies.size())
     {
-        float distance = (m_pPlayer->getPosition() - pEnemy->getPosition()).lengthSquared();
-        float minDistance = std::pow(Player::collisionRadius + pEnemy->getCollisionRadius(), 2.0f);
+        float distance = (m_pPlayer->getPosition() - m_enemies[i]->getPosition()).lengthSquared();
+        float minDistance = std::pow(Player::collisionRadius + m_enemies[i]->getCollisionRadius(), 2.0f);
         // const sf::Vector2f playerPosition = m_pPlayer->getPosition(); --> PANU: Why?
 
         if (distance <= minDistance)
         {
-            playerDied = true;
-            break;
+			if (m_pPlayer->isDashing())
+			{
+				std::swap(m_enemies[i], m_enemies.back());
+				m_enemies.pop_back();
+				continue;
+			}
+			else
+			{
+				playerDied = true;
+				break;
+			}
         }
+
+		i++;
     }
 
     if (playerDied)
@@ -56,7 +68,7 @@ void StatePlaying::update(float dt)
     {
         m_timeUntilEnemySpawn = enemySpawnInterval;
         std::unique_ptr<Enemy> pEnemy = std::make_unique<Enemy>();
-        pEnemy->setPosition(sf::Vector2f(1000, 800));
+        pEnemy->setPosition(sf::Vector2f(ScreenWidth, GroundLevel));
         if (pEnemy->init())
             m_enemies.push_back(std::move(pEnemy));
 		

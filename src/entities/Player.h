@@ -22,11 +22,15 @@ public:
     void update(float dt) override;
     void render(sf::RenderTarget& target) const override;
 
+	bool isDashing() { return m_meteorAttack || m_isDashing; };
+
 private:
 
 	void handleInput();
 	void checkJumps(bool wPressed);
 	void checkTurboJump(bool sPressed);
+	void checkMeteorAttack(bool sPressed);
+	void checkDash(bool spacePressed);
 	void handleSideMovement(bool aPressed, bool dPressed);
 	void applyGravity(float dt);
 	void checkGrounded();
@@ -39,13 +43,25 @@ private:
 	bool m_didDoubleJump = false;
 	bool m_isTurboJumping = false;
 	bool m_isLoadingTurbo = false;
+	bool m_meteorAttack = false;
+	bool m_canDash = true;
+	bool m_isDashing = false;
 	bool m_wHold = false;
 	bool m_sHold = false;
+	bool m_spaceHold = false;
+	bool m_facingLeft = false;
+	bool m_outlineActive = true;
 
 	float m_speed = PlayerSpeed;
 
 	sf::Clock m_turboLoadClock;
 	sf::Clock m_turboEffectClock;
+	sf::Clock m_dashEffectClock;
+	sf::Clock m_dashCooldownClock;
+
+	sf::CircleShape m_playerOutlines;
+
 	sf::RectangleShape m_jumpLoadBar;
+	sf::Color m_playerNormalColor;
 
 };

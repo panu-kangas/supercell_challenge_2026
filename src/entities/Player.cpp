@@ -27,7 +27,14 @@ bool Player::init()
 	m_pSprite->setScale(sf::Vector2f(3.0f, 3.0f));
     m_pSprite->setOrigin({localBounds.size.x / 2.0f, localBounds.size.y / 2.0f});
     m_pSprite->setPosition(m_position);
+	m_playerNormalColor = m_pSprite->getColor();
     m_collisionRadius = collisionRadius;
+
+	m_playerOutlines.setRadius(localBounds.size.x + 11.f);
+	m_playerOutlines.setFillColor(sf::Color::White);
+	m_playerOutlines.setPosition(m_position);
+	sf::FloatRect outlineLocalBounds = m_playerOutlines.getLocalBounds();
+	m_playerOutlines.setOrigin({outlineLocalBounds.size.x / 2.0f, outlineLocalBounds.size.y / 2.0f});
 
 	m_jumpLoadBar.setSize({0, 10});
 	m_jumpLoadBar.setFillColor(sf::Color::Red);
@@ -50,18 +57,24 @@ void Player::checkOutOfBounds()
 
 void Player::checkGrounded()
 {
+	if (!m_isInAir)
+		return ;
+
 	if (m_position.y >= GroundLevel)
 	{		
         m_isInAir = false;
 		m_didDoubleJump = false;
+		m_meteorAttack = false;
 		m_velocity.y = 0;
 		m_position.y = GroundLevel;
+		if (!m_isDashing)
+			m_pSprite->setColor(m_playerNormalColor);
 	}
 }
 
 void Player::applyGravity(float dt)
 {
-	if (m_isTurboJumping)
+	if (m_isTurboJumping || m_isDashing)
 		return ;
 
 	if (m_isInAir)
@@ -77,7 +90,7 @@ void Player::applyGravity(float dt)
 
 void Player::handleSideMovement(bool aPressed, bool dPressed)
 {
-	if (m_isLoadingTurbo)
+	if (m_isLoadingTurbo || m_meteorAttack || m_isDashing)
 		return ;
 
 	if ((!aPressed && !dPressed) || (aPressed && dPressed))
@@ -86,11 +99,50 @@ void Player::handleSideMovement(bool aPressed, bool dPressed)
 		m_velocity.x = -1 * m_speed;
 	else if (dPressed)
 		m_velocity.x = m_speed;
+
+	// PANU: Is this a bad place for this...?
+	if (m_velocity.x > 0)
+		m_facingLeft = false;
+	else if (m_velocity.x < 0)
+		m_facingLeft = true;
+}
+
+void Player::checkDash(bool spacePressed)
+{
+	if (m_meteorAttack || m_isTurboJumping || !m_canDash)
+		return ;
+
+	if (spacePressed && !m_spaceHold)
+	{
+		m_spaceHold = true;
+		m_isDashing = true;
+		m_canDash = false;
+		m_outlineActive = false;
+		m_velocity.x = m_facingLeft ? -1 * DashSpeed : DashSpeed;
+		m_velocity.y = 0;
+		m_pSprite->setColor(PlayerDashColor);
+		m_dashEffectClock.restart();
+	}
+}
+
+void Player::checkMeteorAttack(bool sPressed)
+{
+	if (!m_isInAir || m_isDashing)
+		return ;
+
+	if (sPressed && !m_sHold)
+	{
+		m_meteorAttack = true;
+		m_sHold = true;
+		m_velocity.y = MeteorAttackSpeed;
+		m_velocity.x = 0;
+		m_pSprite->setColor(PlayerDashColor);
+	}
 }
 
 void Player::checkTurboJump(bool sPressed)
 {
-	if (m_isInAir)
+	if (m_isInAir || m_meteorAttack || m_isDashing)
 		return ;
 
 	if (sPressed && !m_sHold)
@@ -105,7 +157,7 @@ void Player::checkTurboJump(bool sPressed)
 
 void Player::checkJumps(bool wPressed)
 {
-	if (m_isTurboJumping || m_isLoadingTurbo)
+	if (m_isTurboJumping || m_isLoadingTurbo || m_meteorAttack || m_isDashing)
 		return ;
 
 	if (wPressed && !m_wHold && !m_didDoubleJump && m_velocity.y > PlayerJumpPower + 400.f)
@@ -135,10 +187,16 @@ void Player::handleInput()
 
 	bool sPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S);
 	checkTurboJump(sPressed);
+	checkMeteorAttack(sPressed);
+
+	bool spacePressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space);
+	checkDash(spacePressed);
 
 
 	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
 		m_wHold = false;
+	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+		m_spaceHold = false;
 	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 	{
 		if (m_isLoadingTurbo)
@@ -162,6 +220,19 @@ void Player::checkTimers()
 		m_isTurboJumping = false;
 		m_isInAir = true;
 	}
+
+	if (m_isDashing && m_dashEffectClock.getElapsedTime().asSeconds() >= DashEffectTime)
+	{
+		m_isDashing = false;
+		m_pSprite->setColor(m_playerNormalColor);
+		m_dashCooldownClock.restart();
+	}
+
+	if (!m_isDashing && !m_canDash && m_dashCooldownClock.getElapsedTime().asSeconds() >= DashCooldown)
+	{
+		m_canDash = true;
+		m_outlineActive = true;
+	}
 }
 
 void Player::update(float dt)
@@ -172,6 +243,9 @@ void Player::update(float dt)
 
 	m_position.x += m_velocity.x * dt;
 	m_position.y += m_velocity.y * dt;
+
+	m_playerOutlines.setPosition(m_position);
+
 	
 	checkOutOfBounds();
     checkGrounded();
@@ -206,6 +280,10 @@ void Player::render(sf::RenderTarget& target) const
 {
     m_pSprite->setRotation(m_rotation);
     m_pSprite->setPosition(m_position);
+
+	if (m_outlineActive)
+		target.draw(m_playerOutlines);
+
     target.draw(*m_pSprite);
 	target.draw(m_jumpLoadBar);
 

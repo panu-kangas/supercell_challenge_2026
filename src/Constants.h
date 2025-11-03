@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 // Screen
-const unsigned ScreenWidth = 1024;
+const unsigned ScreenWidth = 1400;
 const unsigned ScreenHeight = 1024;
 
 // Text utils
@@ -17,15 +17,24 @@ const float PlayerJumpPower = -700.f;
 const float Gravity = 800.f;
 
 // Turbo jump
-
 const float TurboJumpLoadTime = 0.8f;
 const float TurboJumpEffectTime = 0.4f;
 const float TurboJumpPower = -800.f;
 const float TurboJumpBarLength = 100.f;
 
-// Player movement
+// Meteor Attack
+const float MeteorAttackSpeed = 1300.f;
 
+// Dash
+const float DashSpeed = 1200.f;
+const float DashEffectTime = 0.2f;
+const float DashCooldown = 1.0f;
+
+// Player movement
 const float PlayerSpeed = 400.f;
 
+// Colors
 const sf::Color HeaderTextColor = sf::Color(227, 203, 66);
 const sf::Color GroundColor = sf::Color(21, 71, 35);
+const sf::Color PlayerDashColor = sf::Color(250, 99, 35);
+const sf::Color PlayerDashCooldownColor = sf::Color(148, 79, 6);
