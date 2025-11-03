@@ -41,11 +41,14 @@ bool StatePlaying::init()
     m_pPlayer = std::make_unique<Player>();
     if (!m_pPlayer || !m_pPlayer->init())
         return false;
-
     m_pPlayer->setPosition(sf::Vector2f(200, GroundLevel));
 
 	m_pEnemySpawner = std::make_unique<EnemySpawner>();
 	if (!m_pEnemySpawner)
+		return false;
+
+	m_pScoreHandler = std::make_unique<ScoreHandler>();
+	if (!m_pScoreHandler)
 		return false;
 
 	m_pPlatformHandler = std::make_unique<PlatformHandler>();
@@ -83,6 +86,7 @@ void StatePlaying::checkEnemyCollisionAndOOB()
 				std::swap(m_enemies[i], m_enemies.back());
 				m_enemies.pop_back();
 				m_pPlayer->resetDash();
+				m_pScoreHandler->addScore(10);
 				continue;
 			}
 			else
@@ -145,6 +149,7 @@ void StatePlaying::handleGroundDissappear()
 void StatePlaying::update(float dt)
 {
 	handleGroundDissappear();
+	m_pScoreHandler->update();
 	m_pEnemySpawner->spawnEnemy(m_enemies);
 
     bool isPauseKeyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape);
@@ -187,6 +192,8 @@ void StatePlaying::update(float dt)
 void StatePlaying::render(sf::RenderTarget& target) const
 {
 	m_pPlayer->checkCameraShake(target);
+
+	drawCenteredText(m_pFont, target, "Your Score:  " + std::to_string(m_pScoreHandler->getScore()), -370.f);
 
 	if (m_isGroundBlinking)
 	{

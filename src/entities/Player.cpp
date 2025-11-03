@@ -200,7 +200,7 @@ void Player::checkMeteorAttack(bool sPressed)
 
 void Player::checkTurboJump(bool sPressed)
 {
-	if (m_isInAir || m_meteorAttack || m_isDashing)
+	if (m_isInAir || m_meteorAttack || m_isDashing || m_isTurboJumping)
 		return ;
 
 	if (sPressed && !m_sHold)

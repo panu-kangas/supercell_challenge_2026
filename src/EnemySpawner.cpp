@@ -17,7 +17,7 @@ void EnemySpawner::spawnEnemy(std::vector<std::unique_ptr<Enemy>>& m_enemies)
 
 		float rand = randomFloat(0.f, 100.f);
 
-		if (rand < 40.f)
+		if (rand < 30.f)
 			pEnemy = std::make_unique<GroundEnemy>(GroundEnemyBaseSpeed + m_enemySpeedAddition);
 		else
 			pEnemy = std::make_unique<AirEnemy>(AirEnemyBaseSpeed + m_enemySpeedAddition);

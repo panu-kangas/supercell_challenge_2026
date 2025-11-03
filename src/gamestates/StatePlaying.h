@@ -5,6 +5,7 @@
 #include "entities/Enemy.h"
 #include "EnemySpawner.h"
 #include "PlatformHandler.h"
+#include "ScoreHandler.h"
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -31,6 +32,7 @@ private:
     std::unique_ptr<EnemySpawner> m_pEnemySpawner;
 	std::unique_ptr<PlatformHandler> m_pPlatformHandler;
     std::unique_ptr<Player> m_pPlayer;
+    std::unique_ptr<ScoreHandler> m_pScoreHandler;
 
 	std::unique_ptr<sf::Sprite> m_spikeSprite;
 

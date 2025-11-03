@@ -15,7 +15,7 @@ const float GroundLevel = 800.0f;
 const float GroundDissappearInterval = 10.f;
 const float GroundReturnTime = 4.f;
 const float GroundBlinkInterval = 0.2f;
-const float GroundBlinkEffectTime = 2.5f;
+const float GroundBlinkEffectTime = 3.5f;
 
 // Platforms
 const float PlatformInitSpawnTime = 3.0f;
@@ -55,6 +55,10 @@ const float EnemyMinSpawnInterval = 0.3f;
 const float EnemyMinSpawnHeight = GroundLevel;
 const float EnemyMaxSpawnHeight = 100.f;
 const int EnemySpawnUpdateLimit = 6;
+
+// Score
+
+const float ScoreInterval = 0.5f;
 
 // Colors
 const sf::Color HeaderTextColor = sf::Color(227, 203, 66);

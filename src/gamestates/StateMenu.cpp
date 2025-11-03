@@ -45,7 +45,7 @@ void StateMenu::update(float dt)
 
 void StateMenu::render(sf::RenderTarget& target) const
 {
-	drawHeaderText(m_pFont, target, "Dash, Dash, Dash!");
+	drawHeaderText(m_pFont, target, "Run Dashy, run!");
     m_pText->setPosition({ScreenWidth * 0.5f, ScreenHeight * 0.5f});
     target.draw(*m_pText);
 }

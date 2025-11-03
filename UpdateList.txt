@@ -27,6 +27,7 @@ NEW FEATURES:
 - Added platforms that spawn randomly on the game. Player can jump on to platforms.
 - Added Spike wall to the end of room that kills player if he gets too close
 - Added Dissappearing floor! Player has to move only using platforms.
+- Added interactive Introduction for the game.
 
 
 IDEAS:
