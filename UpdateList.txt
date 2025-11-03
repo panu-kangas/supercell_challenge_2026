@@ -29,8 +29,3 @@ NEW FEATURES:
 - Added Dissappearing floor! Player has to move only using platforms.
 - Added interactive Introduction for the game.
 - Added game end handling & play again option.
-
-
-IDEAS:
-
-PANU: Check Henri's repo and asses the Constants header... is it good?
