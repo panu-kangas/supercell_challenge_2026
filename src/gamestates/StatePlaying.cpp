@@ -4,6 +4,7 @@
 #include "ResourceManager.h"
 #include <memory>
 #include <iostream>
+#include <cmath>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 StatePlaying::StatePlaying(StateStack& stateStack)
