@@ -158,7 +158,6 @@ void Player::handleSideMovement(bool aPressed, bool dPressed)
 		m_velocity.x += PlatformSpeed;
 	}
 
-	// PANU: Is this a bad place for this...?
 	if (m_velocity.x > 0)
 		m_facingLeft = false;
 	else if (m_velocity.x < 0)
@@ -327,7 +326,7 @@ void Player::updateJumpLoadBar()
 	if (barLength >= TurboJumpBarLength)
 	{
 		barLength = TurboJumpBarLength;
-		m_jumpLoadBar.setFillColor(sf::Color::Green); // PANU: Is this color thing needed?
+		m_jumpLoadBar.setFillColor(sf::Color::Green);
 	}
 	m_jumpLoadBar.setSize({barLength, m_jumpLoadBar.getLocalBounds().size.y});
 	sf::FloatRect playerBounds = m_pSprite->getLocalBounds();
@@ -346,15 +345,6 @@ void Player::render(sf::RenderTarget& target) const
     target.draw(*m_pSprite);
 	target.draw(m_jumpLoadBar);
 
-/*	// PANU: For testing only
-	sf::CircleShape collisionShape;
-	collisionShape.setRadius(collisionRadius);
-	collisionShape.setFillColor(sf::Color(120, 0, 0, 128));
-	sf::FloatRect localBounds = collisionShape.getLocalBounds();
-    collisionShape.setOrigin({localBounds.size.x / 2.0f, localBounds.size.y / 2.0f});
-	collisionShape.setPosition(m_position);
-
-	target.draw(collisionShape); */
 }
 
 
@@ -362,7 +352,6 @@ sf::Vector2f Player::getSize()
 {
 	if (!m_pSprite)
 	{
-		std::cout << "PLAYER: no sprite yet for getSize()\n";
 		return {0, 0};
 	}
 
@@ -373,7 +362,6 @@ sf::FloatRect Player::getGlobalBounds()
 {
 	if (!m_pSprite)
 	{
-		std::cout << "PLAYER: no sprite yet for getGlobalBounds()\n";
 		return sf::FloatRect(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(0.0f, 0.0f));
 	}
 

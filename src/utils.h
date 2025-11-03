@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp> // PANU: Add onlt what you need
+#include <SFML/Graphics.hpp>
 #include "Constants.h"
 
 void drawHeaderText(const sf::Font* font, sf::RenderTarget& target, std::string str);

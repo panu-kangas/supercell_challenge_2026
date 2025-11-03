@@ -73,17 +73,15 @@ void PlatformHandler::resolvePlayerCollison(int idx, Player* player)
 	float playerPrevBottom = prevPos.y + playerRadius;
 	float playerPrevTop = prevPos.y - playerRadius;
 	float playerPrevLeft = prevPos.x - playerRadius;
-//	float playerPrevRight = prevPos.x + playerRadius;
 
 	sf::FloatRect platformBounds = m_platformVec[idx].getShape().getGlobalBounds();
 	float platformTop = platformBounds.position.y;
 	float platformBottom = platformBounds.position.y + platformBounds.size.y;
-//	float platformLeft = platformBounds.position.x;
-//	float platformRight = platformBounds.position.x + platformBounds.size.x;
+
 
 	if (playerPrevBottom < platformTop)
 	{
-		player->setOnPlatform(platformTop - playerRadius - 10.f, idx); // PANU: Check this
+		player->setOnPlatform(platformTop - playerRadius - 10.f, idx);
 		m_platformVec[idx].setHasPlayer(true);
 	}
 	else
@@ -93,16 +91,6 @@ void PlatformHandler::resolvePlayerCollison(int idx, Player* player)
 			player->setPosition({playerPrevLeft + playerRadius, playerPrevTop + playerRadius + 15.f});
 			player->onPlatformCollision();
 		}
-/*		else if (playerPrevLeft > platformRight && !player->isMeteorAttacking())
-		{
-			player->setPosition({playerPrevLeft + 15.f, playerPrevTop + playerRadius});
-			player->onPlatformCollision();
-		}
-		else if (playerPrevRight < platformLeft && !player->isMeteorAttacking())
-		{
-			player->setPosition({playerPrevLeft + playerRadius - 15.f, playerPrevTop + playerRadius});
-			player->onPlatformCollision();
-		} */
 	}
 	
 }

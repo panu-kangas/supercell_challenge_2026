@@ -28,6 +28,7 @@ NEW FEATURES:
 - Added Spike wall to the end of room that kills player if he gets too close
 - Added Dissappearing floor! Player has to move only using platforms.
 - Added interactive Introduction for the game.
+- Added game end handling & play again option.
 
 
 IDEAS:

@@ -28,6 +28,6 @@ class PlatformHandler
 	float m_spawnTime = PlatformInitSpawnTime;
 
 	std::pair<float, float> m_platformLengthLimits{100.f, 300.f};
-	std::pair<float, float> m_platformHeightLimits{200.f, GroundLevel - 100.f}; // PANU: FIX THIS
+	std::pair<float, float> m_platformHeightLimits{200.f, GroundLevel - 100.f};
 	
 };

@@ -6,7 +6,6 @@
 
 EnemySpawner::EnemySpawner()
 {
-	// PANU: Is this needed?
 }
 
 void EnemySpawner::spawnEnemy(std::vector<std::unique_ptr<Enemy>>& m_enemies)

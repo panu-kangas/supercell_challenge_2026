@@ -13,7 +13,7 @@ class Player final : public Entity
 {
 
 public:
-    static constexpr float collisionRadius = 23.0f; // PANU: Make this dynamical instead...?
+    static constexpr float collisionRadius = 23.0f;
 
     Player();
     virtual ~Player() = default;

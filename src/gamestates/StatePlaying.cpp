@@ -77,7 +77,6 @@ void StatePlaying::checkEnemyCollisionAndOOB()
 
         float distance = (m_pPlayer->getPosition() - m_enemies[i]->getPosition()).lengthSquared();
         float minDistance = std::pow(Player::collisionRadius + m_enemies[i]->getCollisionRadius(), 2.0f);
-        // const sf::Vector2f playerPosition = m_pPlayer->getPosition(); --> PANU: Why?
 
         if (distance <= minDistance)
         {
@@ -149,11 +148,6 @@ void StatePlaying::handleGroundDissappear()
 		m_groundDissappearClock.stop();
 	}
 	handleGroundBlinking();
-}
-
-void StatePlaying::handleEnding()
-{
-	// PANU:
 }
 
 void StatePlaying::update(float dt)

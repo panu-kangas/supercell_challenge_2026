@@ -27,7 +27,6 @@ private:
 	void drawSpikeWall(sf::RenderTarget& target) const;
 	void handleGroundDissappear();
 	void handleGroundBlinking();
-	void handleEnding();
 
     StateStack& m_stateStack;
     std::unique_ptr<EnemySpawner> m_pEnemySpawner;

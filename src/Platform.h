@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp> // PANU:
+#include <SFML/Graphics/RectangleShape.hpp>
 
 class Player;
 

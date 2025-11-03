@@ -19,7 +19,7 @@ class Enemy : public Entity
 {
 
 public:
-    static constexpr float collisionRadius = 23.0f; // PANU: Make this dynamical instead...?
+    static constexpr float collisionRadius = 23.0f;
 
     Enemy() = default;
 	Enemy(float speed, eEnemyType type);
