@@ -71,6 +71,7 @@ void Player::checkGrounded()
         m_isInAir = false;
 		m_didDoubleJump = false;
 		m_meteorAttack = false;
+		m_sHold = false;
 		m_velocity.y = 0;
 		m_position.y = GroundLevel;
 		if (!m_isDashing)

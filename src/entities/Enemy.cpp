@@ -6,6 +6,12 @@
 #include <SFML/Graphics/CircleShape.hpp>
 
 
+Enemy::Enemy(float speed, eEnemyType type)
+{
+	m_speed = speed;
+	m_type = type;
+}
+
 bool Enemy::init()
 {
     const sf::Texture* pTexture = ResourceManager::getOrLoadTexture("enemy.png"); // PANU: Make enemies round too? Makes collision detection more easy
@@ -19,7 +25,27 @@ bool Enemy::init()
     sf::FloatRect localBounds = m_pSprite->getLocalBounds();
     m_pSprite->setOrigin({localBounds.size.x / 2.0f, localBounds.size.y / 2.0f});
     m_pSprite->setPosition(m_position);
-    m_pSprite->setScale(sf::Vector2f(2.5f, 2.5f));
+
+	switch (m_type)
+	{
+		case GROUND:
+		{
+    		m_pSprite->setScale(sf::Vector2f(3.5f, 3.5f));
+			break ;
+		}
+
+		case AIR:
+		{
+    		m_pSprite->setScale(sf::Vector2f(2.5f, 2.5f));
+			break ;
+		}
+
+		default:
+		{
+			break ;
+		}
+	}
+
     m_collisionRadius = collisionRadius;
 
     return true;
@@ -27,7 +53,7 @@ bool Enemy::init()
 
 void Enemy::update(float dt)
 {
-    m_position.x -= 200 * dt;
+    m_position.x -= m_speed * dt;
 }
 
 void Enemy::render(sf::RenderTarget& target) const

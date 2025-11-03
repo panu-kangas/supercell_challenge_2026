@@ -33,9 +33,17 @@ const float DashCooldown = 1.0f;
 // Player movement
 const float PlayerSpeed = 400.f;
 
-// Enemies
+// Enemy movement
+const float GroundEnemyBaseSpeed = 200.f;
+const float AirEnemyBaseSpeed = 300.f;
+const float EnemySpeedAddition = 50.f;
+const float EnemyMaxSpeedAddition = 1000.f;
+
+// Enemy Spawning
 const float EnemyInitSpawnInterval = 2.0f;
 const float EnemyMinSpawnInterval = 0.3f;
+const float EnemyMinSpawnHeight = GroundLevel;
+const float EnemyMaxSpawnHeight = 100.f;
 const int EnemySpawnUpdateLimit = 7;
 
 // Colors
