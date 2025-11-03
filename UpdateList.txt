@@ -25,9 +25,10 @@ NEW FEATURES:
 - Enemies now speed up  over time
 - Added camera shake for Meteor Attack
 - Added platforms that spawn randomly on the game. Player can jump on to platforms.
+- Added Spike wall to the end of room that kills player if he gets too close
+- Added Dissappearing floor! Player has to move only using platforms.
 
 
 IDEAS:
 
-PANU: Input handler? --> Probably not
 PANU: Check Henri's repo and asses the Constants header... is it good?

@@ -11,6 +11,10 @@ const unsigned HeaderTextSize = 70;
 
 // Environment
 const float GroundLevel = 800.0f;
+const float GroundDissappearInterval = 5.f;
+const float GroundReturnTime = 4.f;
+const float GroundBlinkInterval = 0.2f;
+const float GroundBlinkEffectTime = 2.5f;
 
 // Platforms
 const float PlatformInitSpawnTime = 3.0f;
@@ -18,7 +22,7 @@ const float PlatformHeight = 20.f;
 const float PlatformSpeed = -200.f;
 
 // Normal jumping
-const float PlayerJumpPower = -700.f;
+const float PlayerJumpPower = -750.f;
 const float Gravity = 800.f;
 
 // Turbo jump

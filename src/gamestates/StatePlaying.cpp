@@ -18,6 +18,20 @@ StatePlaying::StatePlaying(StateStack& stateStack)
 
 bool StatePlaying::init()
 {
+	const sf::Texture* pTexture = ResourceManager::getOrLoadTexture("spike.png");
+	if (pTexture == nullptr)
+	{
+        return false;
+	}
+
+    m_spikeSprite = std::make_unique<sf::Sprite>(*pTexture);
+    if (!m_spikeSprite)
+	{
+        return false;
+	}
+
+	m_spikeSprite->setScale({2.0f, 2.0f});
+
     m_ground.setSize({ScreenWidth, 256.0f});
     m_ground.setPosition({0.0f, GroundLevel});
     m_ground.setFillColor(GroundColor);
@@ -83,8 +97,52 @@ void StatePlaying::checkEnemyCollisionAndOOB()
         m_stateStack.popDeferred();
 }
 
+void StatePlaying::handleGroundBlinking()
+{
+	if (!m_isGroundBlinking)
+		return ;
+
+	if (m_groundBlinkClock.getElapsedTime().asSeconds() > m_prevBlink + GroundBlinkInterval)
+	{
+		m_isGroundVisible = !m_isGroundVisible;
+		m_prevBlink = m_groundBlinkClock.getElapsedTime().asSeconds();
+	}
+
+	if (m_groundBlinkClock.getElapsedTime().asSeconds() > GroundBlinkEffectTime)
+	{
+		m_isGroundVisible = m_hasGround;
+		m_isGroundBlinking = false;
+		m_prevBlink = 0.0f;
+		m_groundDissappearClock.start();
+	}
+}
+
+void StatePlaying::handleGroundDissappear()
+{
+	if (m_hasGround && m_groundDissappearClock.getElapsedTime().asSeconds() >= GroundDissappearInterval)
+	{
+		m_hasGround = false;
+		m_isGroundBlinking = true;
+		m_groundBlinkClock.restart();
+		m_groundDissappearClock.restart();
+		m_groundDissappearClock.stop();
+	}
+	else if (!m_hasGround && m_groundDissappearClock.getElapsedTime().asSeconds() >= GroundReturnTime)
+	{
+		m_hasGround = true;
+		m_isGroundBlinking = true;
+		m_groundBlinkClock.restart();
+		m_groundDissappearClock.restart();
+		m_groundDissappearClock.stop();
+	}
+	handleGroundBlinking();
+}
+
+
+
 void StatePlaying::update(float dt)
 {
+	handleGroundDissappear();
 	m_pEnemySpawner->spawnEnemy(m_enemies);
 
     bool isPauseKeyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape);
@@ -96,14 +154,30 @@ void StatePlaying::update(float dt)
     }
 
     m_pPlayer->update(dt);
+	if (!m_pPlayer->isInAir() && !m_pPlayer->isOnPlatform() && !m_isGroundBlinking && !m_hasGround)
+	{
+		m_pPlayer->setFallsThroughGround(true);
+	}
+	if (m_pPlayer->getPosition().y > ScreenHeight)
+	{
+		// Player fell and died
+        m_stateStack.popDeferred();
+	}
+
 	m_pPlatformHandler->update(dt, m_pPlayer.get());
 	m_pPlatformHandler->checkPlayerCollision(m_pPlayer.get());
-
 
     for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)
     {
         pEnemy->update(dt);
     }
+
+	float playerLeft = m_pPlayer->getPosition().x - m_pPlayer->getCollisionRadius();
+	if (playerLeft < m_spikeSprite->getLocalBounds().size.x * 2)
+	{
+		// Player hit spike wall
+        m_stateStack.popDeferred();
+	}
 
 	checkEnemyCollisionAndOOB();
 }
@@ -112,10 +186,34 @@ void StatePlaying::render(sf::RenderTarget& target) const
 {
 	m_pPlayer->checkCameraShake(target);
 
-    target.draw(m_ground);
+	if (m_isGroundVisible)
+	{
+		target.draw(m_ground);
+	}
+
 	m_pPlatformHandler->draw(target);
-    for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)
-        pEnemy->render(target);
+
+	for (const std::unique_ptr<Enemy>& pEnemy : m_enemies)
+    	pEnemy->render(target);
     m_pPlayer->render(target);
+
+	drawSpikeWall(target);
 }
+
+void StatePlaying::drawSpikeWall(sf::RenderTarget& target) const
+{
+	float y = 0;
+
+	while (y < GroundLevel)
+	{
+		m_spikeSprite->setPosition({0, y});
+		target.draw(*m_spikeSprite);
+		y += m_spikeSprite->getLocalBounds().size.y * 2;
+	}
+
+	m_spikeSprite->setPosition({0, y});
+	target.draw(*m_spikeSprite);
+	y += m_spikeSprite->getLocalBounds().size.y * 2;
+}
+
 

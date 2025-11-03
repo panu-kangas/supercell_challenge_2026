@@ -23,15 +23,27 @@ public:
 private:
 
 	void checkEnemyCollisionAndOOB();
+	void drawSpikeWall(sf::RenderTarget& target) const;
+	void handleGroundDissappear();
+	void handleGroundBlinking();
 
     StateStack& m_stateStack;
     std::unique_ptr<EnemySpawner> m_pEnemySpawner;
 	std::unique_ptr<PlatformHandler> m_pPlatformHandler;
     std::unique_ptr<Player> m_pPlayer;
 
+	std::unique_ptr<sf::Sprite> m_spikeSprite;
+
     std::vector<std::unique_ptr<Enemy>> m_enemies;
     sf::RectangleShape m_ground;
     bool m_hasPauseKeyBeenReleased = true;
+
+	sf::Clock m_groundDissappearClock;
+	sf::Clock m_groundBlinkClock;
+	bool m_hasGround = true;
+	bool m_isGroundVisible = true;
+	bool m_isGroundBlinking = false;
+	float m_prevBlink = 0.0f;
 
     // void updateCollisions(); PANU: Why??
 };

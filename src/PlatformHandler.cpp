@@ -87,26 +87,22 @@ void PlatformHandler::resolvePlayerCollison(int idx, Player* player)
 		m_platformVec[idx].setHasPlayer(true);
 	}
 	else
-	{ /*
+	{ 
 		if (playerPrevTop > platformBottom)
 		{
-			player->setPosition({playerPrevLeft + PlayerShapeRadius, playerPrevTop + PlayerShapeRadius});
-			player->setVelocity({0, 20});
-			player->setIsJumping(true); // Player is affected by gravity
-
+			player->setPosition({playerPrevLeft + playerRadius, playerPrevTop + playerRadius + 15.f});
+			player->onPlatformCollision();
 		}
-		else if (playerPrevLeft > platformRight && !player->getIsDownDashing())
+		else if (playerPrevLeft > platformRight && !player->isMeteorAttacking())
 		{
-			player->setPosition({platformRight + PlayerShapeRadius, player->getCurPos().y});
-			player->setPlatformCollision(true);
-			player->setVelocity({20, 0});
+			player->setPosition({playerPrevLeft + 15.f, playerPrevTop + playerRadius});
+			player->onPlatformCollision();
 		}
-		else if (playerPrevRight < platformLeft && !player->getIsDownDashing())
+		else if (playerPrevRight < platformLeft && !player->isMeteorAttacking())
 		{
-			player->setPosition({platformLeft - PlayerShapeRadius, player->getCurPos().y});
-			player->setPlatformCollision(true);
-			player->setVelocity({-20, 0});
-		} */
+			player->setPosition({playerPrevLeft + playerRadius - 15.f, playerPrevTop + playerRadius});
+			player->onPlatformCollision();
+		} 
 	}
 	
 }

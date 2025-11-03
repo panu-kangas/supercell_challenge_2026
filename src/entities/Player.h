@@ -22,11 +22,17 @@ public:
     void update(float dt) override;
     void render(sf::RenderTarget& target) const override;
 
+	void onPlatformCollision();
 	void setOnPlatform(float posY, int platformIdx);
 	void removeFromPlatform();
+	bool isOnPlatform() { return m_isOnPlatform; };
 
 	bool isDashing() { return m_meteorAttack || m_isDashing; };
 	void resetDash();
+	bool isMeteorAttacking() { return m_meteorAttack; };
+
+	bool isInAir() { return m_isInAir; };
+	void setFallsThroughGround(bool status) { m_fallsThroughGround = status; };
 
 	void checkCameraShake(sf::RenderTarget& target);
 
@@ -71,6 +77,7 @@ private:
 	bool m_spaceHold = false;
 	bool m_facingLeft = false;
 	bool m_outlineActive = true;
+	bool m_fallsThroughGround = false;
 
 	bool m_isOnPlatform = false;
 	int m_curPlatformIdx = -1;

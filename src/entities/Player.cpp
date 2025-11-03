@@ -16,11 +16,15 @@ bool Player::init()
 {
     const sf::Texture* pTexture = ResourceManager::getOrLoadTexture("player.png");
     if (pTexture == nullptr)
+	{
         return false;
+	}
 
     m_pSprite = std::make_unique<sf::Sprite>(*pTexture);
     if (!m_pSprite)
+	{
         return false;
+	}
 
 	m_prevPos = m_position;
     m_rotation = sf::degrees(0);
@@ -62,6 +66,19 @@ void Player::checkOutOfBounds()
 		m_position.x = rightLimit;
 }
 
+void Player::onPlatformCollision()
+{
+	m_isInAir = true;
+	m_didDoubleJump = false;
+	m_meteorAttack = false;
+	m_isTurboJumping = false;
+	m_velocity.x = 0;
+	m_velocity.y = 0;
+	m_isDashing = false;
+	if (!m_isDashing)
+		m_pSprite->setColor(m_playerNormalColor);
+}
+
 void Player::setOnPlatform(float posY, int platformIdx)
 {
 	if (m_meteorAttack)
@@ -87,7 +104,7 @@ void Player::removeFromPlatform()
 
 void Player::checkGrounded()
 {
-	if (!m_isInAir)
+	if (!m_isInAir || m_fallsThroughGround)
 		return ;
 
 	if (m_position.y >= GroundLevel)
@@ -113,7 +130,7 @@ void Player::applyGravity(float dt)
 	if (m_isTurboJumping || m_isDashing)
 		return ;
 
-	if (m_isInAir)
+	if (m_isInAir || m_fallsThroughGround)
 	{
 		if (m_velocity.y < 0)
 			m_velocity.y += Gravity * 2.3 * dt;
@@ -129,11 +146,11 @@ void Player::handleSideMovement(bool aPressed, bool dPressed)
 	if (m_meteorAttack || m_isDashing)
 		return ;
 
-	if ((!aPressed && !dPressed) || (aPressed && dPressed))
-		m_velocity.x = 0;
-	else if (aPressed && !m_isLoadingTurbo)
+	m_velocity.x = 0;
+
+	if (aPressed && !dPressed && !m_isLoadingTurbo)
 		m_velocity.x = -1 * m_speed;
-	else if (dPressed && !m_isLoadingTurbo)
+	else if (dPressed && !aPressed && !m_isLoadingTurbo)
 		m_velocity.x = m_speed;
 
 	if (m_isOnPlatform)
