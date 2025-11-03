@@ -10,8 +10,9 @@ namespace sf { class Sprite; }
 
 class Player final : public Entity
 {
+
 public:
-    static constexpr float collisionRadius = 42.0f;
+    static constexpr float collisionRadius = 23.0f; // PANU: Make this dynamical instead...?
 
     Player();
     virtual ~Player() = default;
@@ -20,5 +21,11 @@ public:
     void update(float dt) override;
     void render(sf::RenderTarget& target) const override;
 
-    bool m_isJumping = false;
+private:
+
+	void checkGrounded();
+
+	bool m_isInAir = false;
+	bool m_spaceHold = false;
+
 };

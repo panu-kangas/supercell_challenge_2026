@@ -19,6 +19,9 @@ public:
     void render(sf::RenderTarget& target) const override;
 
 private:
+
+	void checkEnemyCollision();
+
     static constexpr const float enemySpawnInterval = 2.0f;
     float m_timeUntilEnemySpawn = enemySpawnInterval;
 
@@ -28,5 +31,5 @@ private:
     sf::RectangleShape m_ground;
     bool m_hasPauseKeyBeenReleased = true;
 
-    void updateCollisions();
+    // void updateCollisions(); PANU: Why??
 };

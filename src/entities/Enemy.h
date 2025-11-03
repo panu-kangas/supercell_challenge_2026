@@ -11,7 +11,7 @@ namespace sf { class Sprite; }
 class Enemy final : public Entity
 {
 public:
-    static constexpr float collisionRadius = 24.0f;
+    static constexpr float collisionRadius = 23.0f; // PANU: Make this dynamical instead...?
 
     Enemy() = default;
     virtual ~Enemy() = default;

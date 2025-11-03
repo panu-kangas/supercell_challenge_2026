@@ -1,0 +1,22 @@
+FIXES:
+
+- Added missing header to StatePlaying.cpp to make the game compile
+- Added better BG color
+- Added better ground color
+- Added utils for making text drawing more simple
+- Fixed Player and Enemy collision radius. Considering making it dynamical too instead of hard coded.
+- Fixed Player jump input system: Space hold no longer allows player to fly
+- Fixed Player jumping: no more jumping in mid air
+- Added better gravitational effect for player.
+
+NEW FEATURES:
+
+
+
+
+
+
+
+IDEAS:
+
+PANU: Input handler?

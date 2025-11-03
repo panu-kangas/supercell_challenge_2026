@@ -2,8 +2,8 @@
 #include "StatePlaying.h"
 #include "StateStack.h"
 #include "ResourceManager.h"
+#include "utils.h"
 #include <SFML/Graphics/RenderTarget.hpp>
-#include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 
 StateMenu::StateMenu(StateStack& stateStack)
@@ -14,11 +14,11 @@ StateMenu::StateMenu(StateStack& stateStack)
 
 bool StateMenu::init()
 {
-    const sf::Font* pFont = ResourceManager::getOrLoadFont("Lavigne.ttf");
-    if (pFont == nullptr)
+    m_pFont = ResourceManager::getOrLoadFont("Lavigne.ttf");
+    if (m_pFont == nullptr)
         return false;
 
-    m_pText = std::make_unique<sf::Text>(*pFont);
+    m_pText = std::make_unique<sf::Text>(*m_pFont);
     if (!m_pText)
         return false;
 
@@ -45,6 +45,7 @@ void StateMenu::update(float dt)
 
 void StateMenu::render(sf::RenderTarget& target) const
 {
+	drawHeaderText(m_pFont, target, "Dash, Dash, Dash!");
     m_pText->setPosition({target.getSize().x * 0.5f, target.getSize().y * 0.5f});
     target.draw(*m_pText);
 }

@@ -2,6 +2,7 @@
 #include "gamestates/StateStack.h"
 #include "gamestates/IState.h"
 #include "gamestates/StateMenu.h"
+#include "Constants.h"
 #include <memory>
 #include <stack>
 #include <optional>
@@ -16,7 +17,7 @@ int main(int argc, char* argv[])
     // ResourceManager must be instantiated here -- DO NOT CHANGE
     ResourceManager::init(argv[0]);
 
-    sf::RenderWindow window(sf::VideoMode({1024, 1024}), "Runner");
+    sf::RenderWindow window(sf::VideoMode({ScreenWidth, ScreenHeight}), "Runner");
     window.setKeyRepeatEnabled(false);
 
     StateStack gamestates;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IState.h"
+#include <SFML/Graphics/Font.hpp>
 #include <memory>
 
 namespace sf { class Text; };
@@ -18,6 +19,7 @@ public:
 public:
     StateStack& m_stateStack;
     std::unique_ptr<sf::Text> m_pText;
+	const sf::Font* m_pFont;
     bool m_hasStartKeyBeenPressed = false;
     bool m_hasStartKeyBeenReleased = false;
 };
