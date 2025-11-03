@@ -1,6 +1,7 @@
 #include "StatePaused.h"
 #include "StateStack.h"
 #include "ResourceManager.h"
+#include "Constants.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -45,6 +46,6 @@ void StatePaused::render(sf::RenderTarget& target) const
     if (m_pPrevState != nullptr)
         m_pPrevState->render(target);
 
-    m_pText->setPosition({target.getSize().x * 0.5f, target.getSize().y * 0.2f});
+    m_pText->setPosition({ScreenWidth * 0.5f, ScreenHeight * 0.2f});
     target.draw(*m_pText);
 }

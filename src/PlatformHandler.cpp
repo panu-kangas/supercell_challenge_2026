@@ -71,26 +71,14 @@ void PlatformHandler::resolvePlayerCollison(int idx, Player* player)
 	sf::Vector2f prevPos = player->getPrevPosition();
 	float playerRadius = player->getSize().x;
 	float playerPrevBottom = prevPos.y + playerRadius;
-	float playerPrevTop = prevPos.y - playerRadius;
-	float playerPrevLeft = prevPos.x - playerRadius;
 
 	sf::FloatRect platformBounds = m_platformVec[idx].getShape().getGlobalBounds();
 	float platformTop = platformBounds.position.y;
-	float platformBottom = platformBounds.position.y + platformBounds.size.y;
-
 
 	if (playerPrevBottom < platformTop)
 	{
 		player->setOnPlatform(platformTop - playerRadius - 10.f, idx);
 		m_platformVec[idx].setHasPlayer(true);
-	}
-	else
-	{ 
-		if (playerPrevTop > platformBottom)
-		{
-			player->setPosition({playerPrevLeft + playerRadius, playerPrevTop + playerRadius + 15.f});
-			player->onPlatformCollision();
-		}
 	}
 	
 }

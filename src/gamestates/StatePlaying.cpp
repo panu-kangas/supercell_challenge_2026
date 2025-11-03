@@ -212,7 +212,7 @@ void StatePlaying::render(sf::RenderTarget& target) const
 		drawCenteredText(m_pFont, target, "Your Score:  " + std::to_string(m_pScoreHandler->getScore()), -370.f);
 	}
 
-	if (m_isGroundBlinking)
+if (m_isGroundBlinking && !m_hasEnded)
 	{
 		if (!m_hasGround)
 			drawHeaderText(m_pFont, target, "Watch out! The floor is about to vanish!");
