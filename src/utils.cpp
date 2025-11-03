@@ -16,6 +16,25 @@ void drawHeaderText(const sf::Font* font, sf::RenderTarget& target, std::string 
 	target.draw(text);
 }
 
+void drawCenteredText(const sf::Font* font, sf::RenderTarget& target, std::string str, float offset, bool smallText)
+{
+	sf::Text text(*font, str);
+	text.setFillColor(sf::Color::White);
+
+	float size = 0.f;
+	if (!smallText)
+		size = RegularTextSize;
+	else
+		size = RegularTextSize - 10.f;
+
+	text.setCharacterSize(size);
+
+	float textX = ScreenWidth / 2 - text.getLocalBounds().size.x / 2;
+	float textY = ScreenHeight / 2 - text.getLocalBounds().size.y / 2 + offset;
+	text.setPosition({textX, textY});
+
+	target.draw(text);
+}
 
 bool checkRectCollision(const sf::FloatRect& rect1, const sf::FloatRect& rect2) 
 {

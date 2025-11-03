@@ -4,6 +4,6 @@
 #include "Constants.h"
 
 void drawHeaderText(const sf::Font* font, sf::RenderTarget& target, std::string str);
+void drawCenteredText(const sf::Font* font, sf::RenderTarget& target, std::string str, float offset = 0, bool smallText = false);
 bool checkRectCollision(const sf::FloatRect& rect1, const sf::FloatRect& rect2);
-void handleCameraShake(sf::RenderTarget& target);
 float randomFloat(float min, float max);

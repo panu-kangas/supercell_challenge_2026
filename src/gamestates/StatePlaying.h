@@ -45,5 +45,7 @@ private:
 	bool m_isGroundBlinking = false;
 	float m_prevBlink = 0.0f;
 
+	const sf::Font* m_pFont;
+
     // void updateCollisions(); PANU: Why??
 };

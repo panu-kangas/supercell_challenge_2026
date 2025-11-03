@@ -8,10 +8,11 @@ const unsigned ScreenHeight = 1024;
 
 // Text utils
 const unsigned HeaderTextSize = 70;
+const unsigned RegularTextSize = 40;
 
 // Environment
 const float GroundLevel = 800.0f;
-const float GroundDissappearInterval = 5.f;
+const float GroundDissappearInterval = 10.f;
 const float GroundReturnTime = 4.f;
 const float GroundBlinkInterval = 0.2f;
 const float GroundBlinkEffectTime = 2.5f;
@@ -53,7 +54,7 @@ const float EnemyInitSpawnInterval = 2.0f;
 const float EnemyMinSpawnInterval = 0.3f;
 const float EnemyMinSpawnHeight = GroundLevel;
 const float EnemyMaxSpawnHeight = 100.f;
-const int EnemySpawnUpdateLimit = 7;
+const int EnemySpawnUpdateLimit = 6;
 
 // Colors
 const sf::Color HeaderTextColor = sf::Color(227, 203, 66);

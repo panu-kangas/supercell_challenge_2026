@@ -1,5 +1,5 @@
 #include "StateMenu.h"
-#include "StatePlaying.h"
+#include "StateIntro.h"
 #include "StateStack.h"
 #include "ResourceManager.h"
 #include "utils.h"
@@ -38,7 +38,7 @@ void StateMenu::update(float dt)
     {
         m_hasStartKeyBeenPressed = false;
         m_hasStartKeyBeenReleased = false;
-        m_stateStack.push<StatePlaying>();
+        m_stateStack.push<StateIntro>();
     }
     m_hasStartKeyBeenReleased |= m_hasStartKeyBeenPressed && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter);
 }
@@ -46,6 +46,6 @@ void StateMenu::update(float dt)
 void StateMenu::render(sf::RenderTarget& target) const
 {
 	drawHeaderText(m_pFont, target, "Dash, Dash, Dash!");
-    m_pText->setPosition({target.getSize().x * 0.5f, target.getSize().y * 0.5f});
+    m_pText->setPosition({ScreenWidth * 0.5f, ScreenHeight * 0.5f});
     target.draw(*m_pText);
 }

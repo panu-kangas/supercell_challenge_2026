@@ -23,14 +23,16 @@ bool StatePlaying::init()
 	{
         return false;
 	}
-
     m_spikeSprite = std::make_unique<sf::Sprite>(*pTexture);
     if (!m_spikeSprite)
 	{
         return false;
 	}
-
 	m_spikeSprite->setScale({2.0f, 2.0f});
+
+	m_pFont = ResourceManager::getOrLoadFont("Lavigne.ttf");
+    if (m_pFont == nullptr)
+        return false;
 
     m_ground.setSize({ScreenWidth, 256.0f});
     m_ground.setPosition({0.0f, GroundLevel});
@@ -185,6 +187,14 @@ void StatePlaying::update(float dt)
 void StatePlaying::render(sf::RenderTarget& target) const
 {
 	m_pPlayer->checkCameraShake(target);
+
+	if (m_isGroundBlinking)
+	{
+		if (!m_hasGround)
+			drawHeaderText(m_pFont, target, "Watch out! The floor is about to vanish!");
+		else
+			drawHeaderText(m_pFont, target, "Fjuuh, the ground is coming back again");
+	}
 
 	if (m_isGroundVisible)
 	{
