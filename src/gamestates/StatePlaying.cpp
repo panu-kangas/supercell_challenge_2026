@@ -100,7 +100,11 @@ void StatePlaying::checkEnemyCollisionAndOOB()
     }
 
     if (playerDied)
-        m_stateStack.popDeferred();
+	{
+		m_hasEnded = true;
+		// m_stateStack.popDeferred();
+
+	}
 }
 
 void StatePlaying::handleGroundBlinking()
@@ -125,6 +129,9 @@ void StatePlaying::handleGroundBlinking()
 
 void StatePlaying::handleGroundDissappear()
 {
+	if (m_pScoreHandler->getScore() < 100)
+		return ;
+
 	if (m_hasGround && m_groundDissappearClock.getElapsedTime().asSeconds() >= GroundDissappearInterval)
 	{
 		m_hasGround = false;
@@ -144,10 +151,23 @@ void StatePlaying::handleGroundDissappear()
 	handleGroundBlinking();
 }
 
-
+void StatePlaying::handleEnding()
+{
+	// PANU:
+}
 
 void StatePlaying::update(float dt)
 {
+	if (m_hasEnded)
+	{
+		bool pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P);
+		if (pressed)
+		{
+			m_stateStack.popDeferred();
+		}
+		return ;
+	}
+
 	handleGroundDissappear();
 	m_pScoreHandler->update();
 	m_pEnemySpawner->spawnEnemy(m_enemies);
@@ -167,8 +187,8 @@ void StatePlaying::update(float dt)
 	}
 	if (m_pPlayer->getPosition().y > ScreenHeight)
 	{
-		// Player fell and died
-        m_stateStack.popDeferred();
+		m_hasEnded = true;
+		// m_stateStack.popDeferred();
 	}
 
 	m_pPlatformHandler->update(dt, m_pPlayer.get());
@@ -182,8 +202,8 @@ void StatePlaying::update(float dt)
 	float playerLeft = m_pPlayer->getPosition().x - m_pPlayer->getCollisionRadius();
 	if (playerLeft < m_spikeSprite->getLocalBounds().size.x * 2)
 	{
-		// Player hit spike wall
-        m_stateStack.popDeferred();
+		m_hasEnded = true;
+		// m_stateStack.popDeferred();
 	}
 
 	checkEnemyCollisionAndOOB();
@@ -193,7 +213,10 @@ void StatePlaying::render(sf::RenderTarget& target) const
 {
 	m_pPlayer->checkCameraShake(target);
 
-	drawCenteredText(m_pFont, target, "Your Score:  " + std::to_string(m_pScoreHandler->getScore()), -370.f);
+	if (!m_hasEnded)
+	{
+		drawCenteredText(m_pFont, target, "Your Score:  " + std::to_string(m_pScoreHandler->getScore()), -370.f);
+	}
 
 	if (m_isGroundBlinking)
 	{
@@ -215,6 +238,12 @@ void StatePlaying::render(sf::RenderTarget& target) const
     m_pPlayer->render(target);
 
 	drawSpikeWall(target);
+
+	if (m_hasEnded)
+	{
+		drawHeaderText(m_pFont, target, "Dashy died! Your Final score:  " + std::to_string(m_pScoreHandler->getScore()));
+		drawCenteredText(m_pFont, target, "Press P to play again");
+	}
 }
 
 void StatePlaying::drawSpikeWall(sf::RenderTarget& target) const

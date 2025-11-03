@@ -27,6 +27,7 @@ private:
 	void drawSpikeWall(sf::RenderTarget& target) const;
 	void handleGroundDissappear();
 	void handleGroundBlinking();
+	void handleEnding();
 
     StateStack& m_stateStack;
     std::unique_ptr<EnemySpawner> m_pEnemySpawner;
@@ -49,5 +50,6 @@ private:
 
 	const sf::Font* m_pFont;
 
-    // void updateCollisions(); PANU: Why??
+	bool m_hasEnded = false;
+
 };
