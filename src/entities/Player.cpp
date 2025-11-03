@@ -43,6 +43,12 @@ bool Player::init()
     return true;
 }
 
+void Player::resetDash()
+{
+	m_canDash = true;
+	m_outlineActive = true;
+}
+
 void Player::checkOutOfBounds()
 {
 	sf::FloatRect localBounds = m_pSprite->getLocalBounds();
@@ -230,8 +236,7 @@ void Player::checkTimers()
 
 	if (!m_isDashing && !m_canDash && m_dashCooldownClock.getElapsedTime().asSeconds() >= DashCooldown)
 	{
-		m_canDash = true;
-		m_outlineActive = true;
+		resetDash();
 	}
 }
 

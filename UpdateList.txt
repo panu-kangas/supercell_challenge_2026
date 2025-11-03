@@ -8,6 +8,9 @@ FIXES:
 - Fixed Player jump input system: Space hold no longer allows player to fly
 - Fixed Player jumping: no more endless jumping in mid air
 - Added better gravitational effect for player.
+- Fixed enemy clearing logic: the game did not remove Out Of Bounf enemies from the vector. Now it does.
+- Moved Enemy spawning logic to own class
+
 
 NEW FEATURES:
 
@@ -17,7 +20,7 @@ NEW FEATURES:
 - Added Turbo Jump, that allows player to charge up an enormous jump
 - Added Meteor Attack that falls down from air and kills enemies
 - Added Side Dashing, that can kill enemies and help player to move quickly around
-
+- Created Enemy spawning logic where enemies appear faster over time
 
 
 IDEAS:

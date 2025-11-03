@@ -8,6 +8,8 @@
 #include <cmath>
 #include <SFML/Graphics/RenderTarget.hpp>
 
+#include <iostream>
+
 StatePlaying::StatePlaying(StateStack& stateStack)
     : m_stateStack(stateStack)
 {
@@ -25,15 +27,30 @@ bool StatePlaying::init()
 
     m_pPlayer->setPosition(sf::Vector2f(200, GroundLevel));
 
+	m_pEnemySpawner = std::make_unique<EnemySpawner>();
+	if (!m_pEnemySpawner)
+		return false;
+
     return true;
 }
 
-void StatePlaying::checkEnemyCollision()
+void StatePlaying::checkEnemyCollisionAndOOB()
 {
+	if (m_enemies.empty())
+		return ;
+
     bool playerDied = false;
+	float leftBoundary = 0.0f - m_enemies[0]->getCollisionRadius();
 	size_t i = 0;
     while (i < m_enemies.size())
     {
+		if (m_enemies[i]->getPosition().x <= leftBoundary)
+		{
+			std::swap(m_enemies[i], m_enemies.back());
+			m_enemies.pop_back();
+			continue;
+		}
+
         float distance = (m_pPlayer->getPosition() - m_enemies[i]->getPosition()).lengthSquared();
         float minDistance = std::pow(Player::collisionRadius + m_enemies[i]->getCollisionRadius(), 2.0f);
         // const sf::Vector2f playerPosition = m_pPlayer->getPosition(); --> PANU: Why?
@@ -44,6 +61,7 @@ void StatePlaying::checkEnemyCollision()
 			{
 				std::swap(m_enemies[i], m_enemies.back());
 				m_enemies.pop_back();
+				m_pPlayer->resetDash();
 				continue;
 			}
 			else
@@ -62,18 +80,7 @@ void StatePlaying::checkEnemyCollision()
 
 void StatePlaying::update(float dt)
 {
-    m_timeUntilEnemySpawn -= dt;
-
-    if (m_timeUntilEnemySpawn < 0.0f)
-    {
-        m_timeUntilEnemySpawn = enemySpawnInterval;
-        std::unique_ptr<Enemy> pEnemy = std::make_unique<Enemy>();
-        pEnemy->setPosition(sf::Vector2f(ScreenWidth, GroundLevel));
-        if (pEnemy->init())
-            m_enemies.push_back(std::move(pEnemy));
-		
-		// PANU: Add enemy spawner and make the interval tighten up
-    }
+	m_pEnemySpawner->spawnEnemy(m_enemies);
 
     bool isPauseKeyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape);
     m_hasPauseKeyBeenReleased |= !isPauseKeyPressed;
@@ -90,7 +97,7 @@ void StatePlaying::update(float dt)
         pEnemy->update(dt);
     }
 
-	checkEnemyCollision();
+	checkEnemyCollisionAndOOB();
 }
 
 void StatePlaying::render(sf::RenderTarget& target) const

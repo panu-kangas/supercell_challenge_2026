@@ -23,6 +23,7 @@ public:
     void render(sf::RenderTarget& target) const override;
 
 	bool isDashing() { return m_meteorAttack || m_isDashing; };
+	void resetDash();
 
 private:
 
