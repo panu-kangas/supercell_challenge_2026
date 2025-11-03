@@ -35,7 +35,7 @@ void Enemy::render(sf::RenderTarget& target) const
     m_pSprite->setPosition(m_position);
     target.draw(*m_pSprite);
 
-	// PANU: For testing only
+/*	// PANU: For testing only
 	sf::CircleShape collisionShape;
 	collisionShape.setRadius(collisionRadius);
 	collisionShape.setFillColor(sf::Color(0, 120, 0, 128));
@@ -43,5 +43,5 @@ void Enemy::render(sf::RenderTarget& target) const
     collisionShape.setOrigin({localBounds.size.x / 2.0f, localBounds.size.y / 2.0f});
 	collisionShape.setPosition(m_position);
 
-	target.draw(collisionShape);
+	target.draw(collisionShape); */
 }

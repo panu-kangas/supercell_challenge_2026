@@ -27,8 +27,6 @@ public:
     const int getHealth() const { return m_health; }
     void setHealth(int health) { m_health = health; }
 
-	sf::Vector2f getSize() { m_pSprite->getLocalBounds().size; };
-
 protected:
     sf::Vector2f m_position;
     sf::Vector2f m_velocity;

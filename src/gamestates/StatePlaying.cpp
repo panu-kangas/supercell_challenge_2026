@@ -44,7 +44,6 @@ void StatePlaying::checkEnemyCollision()
         }
     }
 
-    // End Playing State on player death
     if (playerDied)
         m_stateStack.popDeferred();
 }

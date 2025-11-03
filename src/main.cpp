@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
     ResourceManager::init(argv[0]);
 
     sf::RenderWindow window(sf::VideoMode({ScreenWidth, ScreenHeight}), "Runner");
-    window.setKeyRepeatEnabled(false);
+    window.setKeyRepeatEnabled(false); // PANU: Does this work? Maybe remove just in case because of own key hold handling...?
 
     StateStack gamestates;
     if (!gamestates.push<StateMenu>())
